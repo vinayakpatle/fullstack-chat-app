@@ -9,7 +9,7 @@ import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage"
 import SettingsPage from "./pages/SettingsPage"
-import ProfilePage from "./pages/profilePage";
+import ProfilePage from "./pages/ProfilePage";
 import useThemeStore from "./store/useThemeStore";
 
 function App() {
