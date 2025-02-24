@@ -1,7 +1,15 @@
 import pkg from "pg";
 const {Client}=pkg
+import dotenv from "dotenv";
+dotenv.config();
 
-const pgClient=new Client("postgresql://neondb_owner:npg_k9OYcqdl3HiW@ep-mute-mode-a8t7ytdn-pooler.eastus2.azure.neon.tech/neondb?sslmode=require");
+//console.log(process.env.POSTGRES_URL);
+
+const pgClient = new Client({
+    connectionString:process.env.POSTGRES_URL,
+    ssl: { rejectUnauthorized: false } 
+  });
+  
 
 pgClient.connect()
 .then(()=>console.log("Connected to postgresSql"))
