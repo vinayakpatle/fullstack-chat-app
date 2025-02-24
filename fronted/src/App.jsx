@@ -13,7 +13,7 @@ import ProfilePage from "./pages/profilePage";
 import useThemeStore from "./store/useThemeStore";
 
 function App() {
-  const {authUser,authCheck,isCheckingAuth} =useAuthStore();
+  const {authUser,authCheck,isCheckingAuth,onlineUsers} =useAuthStore();
   const {theme} =useThemeStore();
 
 
@@ -23,7 +23,8 @@ function App() {
   },[authCheck])
 
   console.log("authUser "+{authUser});
-
+  console.log("Online users "+onlineUsers);
+  
   if(isCheckingAuth && authUser){
     return(
       <div className='flex items-center justify-center h-screen'>

@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import toast from "react-hot-toast";
 import {axiosInstance} from "../lib/axios";
+import {useAuthStore} from "./useAuthStore";
 
 export const useChatStore=create((set,get)=>({
     messages:[],
@@ -22,14 +23,14 @@ export const useChatStore=create((set,get)=>({
     },
 
     getMessages:async(user_id)=>{
-        set({isMessageLoading:true});
+        set({isMessagesLoading:true});
         try{
             const res=await axiosInstance.get(`/messages/${user_id}`);
             set({messages:res.data});
         }catch(e){
             toast.error(e.response.data.message);
         }finally{
-            set({isMessageLoading:false});
+            set({isMessagesLoading:false});
         }
     },
 
@@ -43,8 +44,25 @@ export const useChatStore=create((set,get)=>({
         }
     },
 
+    subscribeToMessages:()=>{
+        const {selectedUser}=get();
+        if(!selectedUser) return ;
+        const socket=useAuthStore.getState().socket;
+
+        socket.on("newMessage",(newMessage)=>{
+            if(newMessage.sender_id===selectedUser.id){
+                set({messages:[...get().messages,newMessage]});
+            }
+        })
+    },
+
+    unSubscribeToMessages:()=>{ // to remove the event listener
+        const socket=useAuthStore.getState().socket;
+        socket.off("newMessage");
+    },
+
     setSelectedUser:((selectedUser)=>{
-        set({selectedUser:selectedUser})
+        set({selectedUser:selectedUser});
     })
 
 }))
